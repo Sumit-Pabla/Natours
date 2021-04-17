@@ -26,9 +26,10 @@ exports.checkBody = (req, res, next) => {
 }
 
 
-exports.getTour = (req, res) => {
+exports.getTour = (req, res, next) => {
     const id = req.params.id*1;
     const tour = tours.find(el => el.id === id)
+    console.log(next)
     res.status(200).json({
       status: 'success',
       data: {
