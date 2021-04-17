@@ -2,4 +2,5 @@
 .env.example
 .env.local
 .env.staging
+config.env
 node_modules
