@@ -3,32 +3,42 @@ const Tour = require('./../models/tourModel');
 
 
 
-
-
-
-
 exports.getTour = (req, res, next) => {
-    const id = req.params.id*1;
-    // const tour = tours.find(el => el.id === id)
-    // console.log(next)
-    // res.status(200).json({
-    //   status: 'success',
-    //   data: {
-    //     tour
-    //   }
-    // })
-  }
-  
-exports.getAllTours = (req, res) => {
-    console.log("Test")
+    try{
+      const tour = await Tour.findById(req.params.id);  
+    
+    const tour = tours.find(el => el.id === id)
+    console.log(next)
     res.status(200).json({
       status: 'success',
-      // requestedAt: req.requestTime,
-      // results: tours.length,
-      // data: {
-      //   tours
-      // }
+      data: {
+        tour
+      }
     })
+}catch(err){
+  res.status(404).json({
+    status: 'fail',
+    message: err
+}
+  }
+  
+exports.getAllTours = async (req, res) => {
+  try{
+    const tours = await Tour.find()
+
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      results: tours.length,
+      data: {
+        tours
+      }
+    })}catch(err){
+      res.status(404).json({
+        status: 'fail',
+        message: err
+      })
+    }
   }
 
   exports.createTour = async (req, res) => {
@@ -46,21 +56,33 @@ exports.getAllTours = (req, res) => {
   } catch(err){
     res.status(400).json({
       status: "fail",
-      message: err
+      message: "invalid data sent!"
     })
   }
   }
   
   exports.updateTour = (req, res) => {
-    
+    try{
+
+      const tour = await Tour.findByIdAndUpdate(req.params.id,req.body, {
+        new: true,
+        runValidators: true
+      })
+      res.status(200).json({
+        status: 'success',
+        data: {
+          tour: '<updated tour view>'
+        }
+      })
+    } catch(err){
+      res.status(400).json({
+        status: "fail",
+        message: "invalid data sent!"
+      })
+    }
     
   
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour: '<updated tour view>'
-      }
-    })
+   
   }
   
   exports.deleteTour = (req, res) => {
