@@ -3,11 +3,11 @@ const Tour = require('./../models/tourModel');
 
 
 
-exports.getTour = (req, res, next) => {
+exports.getTour = async (req, res, next) => {
     try{
       const tour = await Tour.findById(req.params.id);  
     
-    const tour = tours.find(el => el.id === id)
+    // const tour = tours.find(el => el.id === id)
     console.log(next)
     res.status(200).json({
       status: 'success',
@@ -19,8 +19,8 @@ exports.getTour = (req, res, next) => {
   res.status(404).json({
     status: 'fail',
     message: err
-}
-  }
+})
+  }}
   
 exports.getAllTours = async (req, res) => {
   try{
@@ -61,7 +61,7 @@ exports.getAllTours = async (req, res) => {
   }
   }
   
-  exports.updateTour = (req, res) => {
+  exports.updateTour = async (req, res) => {
     try{
 
       const tour = await Tour.findByIdAndUpdate(req.params.id,req.body, {
@@ -85,12 +85,18 @@ exports.getAllTours = async (req, res) => {
    
   }
   
-  exports.deleteTour = (req, res) => {
-    
-  
+  exports.deleteTour = async (req, res) => {
+    try{
+    await Tour.findByIdAndDelete(req.params.id);
     res.status(204).json({
       status: 'success',
       data: null
     })
+  }catch(err){
+    res.status(400).json({
+      status: "fail",
+      message: "invalid data sent!"
+    })
+  }
   }
   
