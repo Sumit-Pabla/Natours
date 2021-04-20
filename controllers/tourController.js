@@ -2,7 +2,29 @@ const fs = require("fs");
 const Tour = require('./../models/tourModel');
 
 exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage, price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty'
+  next();
+};
 
+class APIFeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+
+  filter() {
+    const queryObj = {...this.queryString}
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach(el => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    this.query.find(JSON.parse(queryStr))
+    //let query = Tour.find(JSON.parse(queryStr));
+  }
 }
 
 exports.getTour = async (req, res, next) => {
@@ -26,29 +48,32 @@ exports.getTour = async (req, res, next) => {
   
 exports.getAllTours = async (req, res) => {  
   try{
-    const queryObj = {...req.query}
-    const exludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el])
 
-    const queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    //FILTERING
+    // const queryObj = {...req.query}
+    // const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    // excludedFields.forEach(el => delete queryObj[el]);
 
-    let query = Tour.find(JSON.parse(queryStr));
-    
+    // let queryStr = JSON.stringify(queryObj);
+
+    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    // let query = Tour.find(JSON.parse(queryStr));
+
     //SORTING
     if(req.query.sort){
-        const sortBy = req.query.sort.split(',').join(' ')
-        query = query.sort(req.query.sort)
+        const sortBy = req.query.sort.split(',').join(' ');
+        query = query.sort(sortBy)
     }else {
-      query.sort('-createdAt')
-    }
+      query = query.sort('id');
+    } 
+    //FIELD LIMITING 
     
-    //FIELD LIMITING
     if(req.query.fields){
+
       const fields = req.query.fields.split(',').join(' ');
       query = query.select(fields)
     } else{
-      query = query.select('-__v')
+      query = query.select('-__v');  
     }
 
     //PAGINATION
@@ -59,9 +84,8 @@ exports.getAllTours = async (req, res) => {
 
     if(req.query.page) {
       const numTours = await Tour.countDocuments();
-      if(skip>numTours) throw new Error('This pahe does not exists')
+      if(skip>numTours) {throw new Error('This path does not exists')}
     }
-    
     
     const tours = await query;
 

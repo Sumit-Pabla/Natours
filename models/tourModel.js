@@ -8,17 +8,22 @@ const tourSchema = new mongoose.Schema({
       unique: true,
       trim: true
     },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+        select: false
+      },
     duration: {
       type: Number,
-      requires: [true, 'A tour must have a duration']
+      required: [true, 'A tour must have a duration']
     },
     maxGroupSize: {
       type: Number,
-      requires: [true, 'A tour must have a group size']
+      required: [true, 'A tour must have a group size']
     },
     difficulty: {
       type: String,
-      requires: [true, 'A tour must have a difficulty']
+      required: [true, 'A tour must have a difficulty']
     },
     ratingsAverage: {
       type: Number,
@@ -49,10 +54,6 @@ const tourSchema = new mongoose.Schema({
       required: [true, 'A tour must have a image cover']
     },
     images: [String],
-    createdAt: {
-      type: Date,
-      deafult: Date.now(),
-    },
     startDates: [Date]
     
 
