@@ -14,7 +14,7 @@ const tourSchema = new mongoose.Schema({
       //validate: [validator.isAlpha, 'Tour name must only containe chars']
 
     },
-    slug: String,
+    slug: {type: String},
     createdAt: {
         type: Date,
         default: Date.now(),
@@ -53,13 +53,13 @@ const tourSchema = new mongoose.Schema({
     priceDiscount: {
 
       type: Number,
-      validate: {
-        function() {
+       validate: {
+        validator: function(val) {
           return val < this.price;
         },
-        message: "Discount price is > regular price"
-      }
-    },
+         message: "Discount price is > regular price"
+        }
+     },
     summary: {
       type: String,
       trim: true,
