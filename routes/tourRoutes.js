@@ -5,10 +5,11 @@ const router = express.Router();
 
 //router.param('id', tourController.checkId)
 
+router.route('/tour-stats').get(tourController.getTourStats);
 
 router
 .route("/top-5-cheap")
-.get(tourController.aliasTopTours, tourController.getAllTours)
+.get(tourController.aliasTopTours, tourController.getAllTours);
 
 router
 .route("/")
