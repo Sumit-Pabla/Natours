@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv');
-
+const app = require('./app')
 
 process.on('uncaughtexception', err => {
   console.log(err.name, err.message)
@@ -8,7 +8,6 @@ process.on('uncaughtexception', err => {
 })
 
 dotenv.config({path: './config.env'})
-const app = require('./app')
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', 
 process.env.DATABASE_PASSWORD)
