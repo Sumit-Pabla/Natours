@@ -32,12 +32,16 @@ exports.getAllUsers = catchAsync(async (req, res) => {
     });
   }
   
-  exports.createUser = (req, res) => {
-    res.status(500).json({
-      status: 'error',
-      message: "This route is not yet defined"
-    });
-  }
+  exports.createUser = catchAsync(async(req, res) => {
+    const newUser = await User.create(req.body)
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      tour: newUser,
+    },
+  });
+  })
   
   exports.deleteUser = (req, res) => {
     res.status(500).json({
