@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan")
+const rateLimit = require('express-rate-limit')
 
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/AppError')
@@ -13,8 +14,15 @@ const app = express();
 //Middleware
 if(process.env.NODE_ENV === 'development'){
   app.use(morgan('dev'))
-
 }
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 100,
+  message: 'Too many requesest from this IP. Try again in an hour'
+});
+app.use('/api', limiter)
+
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`))
 
