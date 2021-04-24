@@ -86,7 +86,7 @@ exports.protect = catchAsync((req,res,next) => {
 
 
     if(!token) {
-        return next(new AppError('You are not loffed in', 401));
+        return next(new AppError('You are not logged in', 401));
     }
     //Validate token
     const decoded = promisify(jwt.verify)(token, process.env.JWT_SECRET); 
@@ -139,7 +139,7 @@ res.status(200).json({
     user.passwordRestExpires = undefined ; 
     await user.save({ validateBeforeSave: false });
 
-    return next(new AppError(`There was an error sendint the email. Try again later`, 500))
+    return next(new AppError(`There was an error sending the email. Try again later`, 500))
 }
 
 })

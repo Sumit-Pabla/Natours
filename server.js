@@ -21,7 +21,6 @@ mongoose.connect(DB, {
 
 })
 
-
 //STARTING SERVER
 const port = 3000;
 app.listen(port, () => {

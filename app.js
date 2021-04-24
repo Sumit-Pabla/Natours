@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan")
 const rateLimit = require('express-rate-limit')
-
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/AppError')
 const tourRouter = require('./routes/tourRoutes');
