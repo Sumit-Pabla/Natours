@@ -1,8 +1,10 @@
 const fs = require("fs");
 const AppError = require("../utils/AppError");
 const User = require('./../models/userModel');
-const APIFeatures = require('./../utils/apiFeatures')
-const catchAsync = require('./../utils/catchAsync')
+const APIFeatures = require('./../utils/apiFeatures');
+const catchAsync = require('./../utils/catchAsync');
+const factory = require('./handlerFactory');
+
 
 
 const filterObj = (obj, ...allowedFields) => {
@@ -44,37 +46,47 @@ exports.updateMe = async(req, res, next) => {
   });
 }
 
-  exports.getUser = (req, res) => {
-    res.status(500).json({
-      status: 'error',
-      message: "This route is not yet defined"
-    });
-  }
-  
-  exports.updateUser = (req, res) => {
-    res.status(500).json({
-      status: 'error',
-      message: "This route is not yet defined"
-    });
-  }
-  
-  exports.createUser = catchAsync(async(req, res) => {
-    const newUser = await User.create(req.body)
 
-  res.status(201).json({
-    status: "success",
-    data: {
-      tour: newUser,
-    },
-  });
-  })
+exports.getUser = factory.getOne(User);
+  // exports.getUser = (req, res) => {
+  //   res.status(500).json({
+  //     status: 'error',
+  //     message: "This route is not yet defined"
+  //   });
+  // }
   
-  exports.deleteUser = (req, res) => {
-    res.status(500).json({
-      status: 'error',
-      message: "This route is not yet defined"
-    });
-  }
+  exports.updateUser = factory.updateOne(User)
+
+  // exports.updateUser = (req, res) => {
+  //   res.status(500).json({
+  //     status: 'error',
+  //     message: "This route is not yet defined"
+  //   });
+  // }
+  
+
+
+  exports.createUser = factory.createOne(User)
+
+  // exports.createUser = catchAsync(async(req, res) => {
+  //   const newUser = await User.create(req.body)
+
+  // res.status(201).json({
+  //   status: "success",
+  //   data: {
+  //     tour: newUser,
+  //   },
+  // });
+  // })
+  
+
+  exports.deleteUser = factory.deleteOne(User)
+  // exports.deleteUser = (req, res) => {
+  //   res.status(500).json({
+  //     status: 'error',
+  //     message: "This route is not yet defined"
+  //   });
+  // }
 
   exports.deleteMe = catchAsync(async(req, res, next) => {
     await User.findByIdAndUpdate(req.user.id, { active: false })
