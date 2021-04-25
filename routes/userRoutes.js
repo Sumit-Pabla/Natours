@@ -20,6 +20,7 @@ router.delete('/deleteMe', userController.deleteMe)
 router.get('/me', userController.getMe, userController.getUser)
 
 router.use(authController.restrictTo('admin'))
+
 router
 .route('/')
 .get(userController.getAllUsers)

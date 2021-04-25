@@ -1,5 +1,5 @@
 const catchAsync = require('./../utils/catchAsync');
-const appError = require('./../utils/appError');
+const AppError = require('./../utils/appError');
 const APIFeatures = require('./../utils/apiFeatures');
 
 
@@ -48,7 +48,7 @@ exports.updateOne = Model => catchAsync(async (req, res, next) => {
     res.status(201).json({
       status: "success",
       data: {
-        tour: newTour,
+        data: newDoc,
       },
     });
   })
