@@ -8,8 +8,8 @@ import { updateData } from './updateSettings'
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login')
 const logOutBtn = document.querySelector('.nav__el--logout');
-const userDataForm = document.querySelector('.form-user-data')
-
+const userDataForm = document.querySelector('.form-user-data');
+const usePasswordForm = document.querySelector('.form-user-password');
 
 
 if(mapBox) {
@@ -28,13 +28,26 @@ if(loginForm){
 if(logOutBtn) logOutBtn.addEventListener('click', logout)
 
 if(userDataForm) {
-    
+
     userDataForm.addEventListener('submit', e => {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const name = document.getElementById('name').value;
-        updateData(name, email);
+        updateSettings({name, email}, 'data');
     })
+}
 
 
+if(userPasswordForm) {
+    userDataForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const passwordCurrent = document.getElementById('password-current').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
+        await updateSettings({passwordCurrent, password, passwordConfirm}, 'password');
+
+        document.getElementById('password-current').value= '';
+        document.getElementById('password').value= '';
+        document.getElementById('password-confirm').value= '';
+    })
 }
