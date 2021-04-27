@@ -8,6 +8,7 @@ const tourRouter = require('./routes/tourRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const cookieParser = require('cookie-parser')
 
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -35,6 +36,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp({ 
@@ -45,8 +47,7 @@ app.use(hpp({
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(`Headers`);
-  console.log(req.headers)
+  console.log(req.cookies)
   next();
 });
 
