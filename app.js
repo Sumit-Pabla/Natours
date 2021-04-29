@@ -11,6 +11,7 @@ const bookingRouter = require('./routes/bookingRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const cookieParser = require('cookie-parser')
+const compression = require('compression')
 
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -47,10 +48,9 @@ app.use(hpp({
     'duration', 'ratingsQuantity', 'ratingsAverage', 'maxGroupSize', 'difficulty', 'price'
   ]}))
 
-
+app.use(compression())
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  //console.log(req.cookies)
   next();
 });
 
@@ -65,10 +65,7 @@ app.use('/api/v1/bookings', bookingRouter)
 
 
 app.all('*', (req, res, next) => {
- 
-  // const err = new Error(`Can't find ${req.originalUrl}`);
-  // err.status = 'fail';
-  // err.statusCode = 404;
+
 
   next(new AppError(`Can't find ${req.originalUrl}`, 404))
 })

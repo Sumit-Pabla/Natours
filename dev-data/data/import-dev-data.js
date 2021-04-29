@@ -33,9 +33,7 @@ const importData = async () => {
         await User.create(users, { validateBeforeSave: false})
         await Review.create(reviews)
 
-        console.log(`data successfully loaded`)
     }catch(err){
-        console.log(err)
     }
     process.exit();
 }

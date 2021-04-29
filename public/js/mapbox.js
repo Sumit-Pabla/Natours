@@ -2,7 +2,6 @@
 
 export const displayMap = (locations) => {
     
-    console.log('TESITJERVKSDVN')
     mapboxgl.accessToken = 'pk.eyJ1Ijoic3VtaXRwYWJsYSIsImEiOiJja256MWhpbHAwMTYzMm92cmVrbWF2czVtIn0.aSuxhBXNdVmp83m8JrSXXA';
 
 
